@@ -4,12 +4,10 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textview_first"
         android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="首页" />
-
+        android:textSize="28sp"
+        android:layout_centerInParent="true"
+        android:text="我的" />
 
 </RelativeLayout>

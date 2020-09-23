@@ -1,55 +1,110 @@
 package com.transsnet.myapplication;
 
+import android.graphics.Color;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private ViewPager viewPager;
+    private TextView homeTabTv;
+    private TextView infoTabTv;
+    private TextView mineTabTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        initView();
+        initListener();
+        initData();
+    }
+
+    private void initView() {
+        viewPager = findViewById(R.id.viewpager);
+        homeTabTv = findViewById(R.id.home_tv);
+        infoTabTv = findViewById(R.id.info_tv);
+        mineTabTv = findViewById(R.id.mine_tv);
+    }
+
+    private void initListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                selectTab(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
+
+        homeTabTv.setOnClickListener(this);
+        infoTabTv.setOnClickListener(this);
+        mineTabTv.setOnClickListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    private void initData() {
+        HomeFragment homeFragment = new HomeFragment();
+        InfoFragment infoFragment = new InfoFragment();
+        MineFragment mineFragment = new MineFragment();
+        final List<Fragment> srcList = new ArrayList<>();
+        srcList.add(homeFragment);
+        srcList.add(infoFragment);
+        srcList.add(mineFragment);
+
+        HomePagerAdapter adapter =new HomePagerAdapter(getSupportFragmentManager());
+        adapter.setFragments(srcList);
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void selectTab(int position){
+        if(position == 0){
+            homeTabTv.setTextColor(Color.parseColor("#099BFA"));
+            infoTabTv.setTextColor(Color.parseColor("#999999"));
+            mineTabTv.setTextColor(Color.parseColor("#999999"));
+        }else if(position == 1){
+            homeTabTv.setTextColor(Color.parseColor("#999999"));
+            infoTabTv.setTextColor(Color.parseColor("#099BFA"));
+            mineTabTv.setTextColor(Color.parseColor("#999999"));
+        }else if(position == 2){
+            homeTabTv.setTextColor(Color.parseColor("#999999"));
+            infoTabTv.setTextColor(Color.parseColor("#999999"));
+            mineTabTv.setTextColor(Color.parseColor("#099BFA"));
         }
-
-        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.home_tv:
+                viewPager.setCurrentItem(0);
+                selectTab(0);
+                break;
+            case R.id.info_tv:
+                viewPager.setCurrentItem(1);
+                selectTab(1);
+                break;
+            case R.id.mine_tv:
+                viewPager.setCurrentItem(2);
+                selectTab(2);
+                break;
+        }
     }
 }
