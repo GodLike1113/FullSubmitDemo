@@ -94,15 +94,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.home_tv:
-                viewPager.setCurrentItem(0);
+                viewPager.setCurrentItem(0,false);
                 selectTab(0);
                 break;
             case R.id.info_tv:
-                viewPager.setCurrentItem(1);
+                viewPager.setCurrentItem(1,false);
                 selectTab(1);
                 break;
             case R.id.mine_tv:
-                viewPager.setCurrentItem(2);
+                viewPager.setCurrentItem(2,false);
                 selectTab(2);
                 break;
         }
